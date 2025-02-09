@@ -1,4 +1,4 @@
-import { ArrowUpRight, HandCoins } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 import smile from "../../assets/smile.png"
 import heart from "../../assets/heart.png"
 
@@ -9,7 +9,13 @@ const cards = () => {
 
             <div className="flex flex-col items-start gap-2 w-1/6">
                 <div
-                    className="w-full rounded-[32px] h-96 relative bg-[#033f2d]">
+                    className="w-full rounded-[32px] h-96 relative">
+
+                    <img
+                        className="h-full w-full object-cover rounded-[32px] scale-x-[-1] brightness-[65%]"
+                        src="https://thumbs.dreamstime.com/b/happy-african-farmer-working-countryside-holding-wood-box-fresh-vegetables-215052594.jpg"
+                    />
+
                     <div className="flex flex-col items-start gap-2 absolute left-3 top-24 text-white ">
                         <h1 className="font-semibold text-5xl">65%</h1>
                         <p className="text-xs text-left w-[95%] text-neutral-300">Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique cupiditate, incidunt expedita nemo molestias itaque nisi quibusdam pariatur..</p>
@@ -17,10 +23,10 @@ const cards = () => {
                     <div className="flex items-center justify-center">
                         <div
                             style={{ padding: "7px 7px 7px 15px" }}
-                            className="w-[95%] bg-[#1c5141] text-white rounded-full flex items-center text-base justify-between absolute bottom-2"
+                            className="w-[95%] bg-neutral-500 text-white rounded-full flex items-center text-base justify-between absolute bottom-2"
                         >
                             Enroll Now
-                            <div className="bg-[#caf66e] rounded-full w-12 h-12 flex items-center justify-center">
+                            <div className="bg-neutral-200 rounded-full w-12 h-12 flex items-center justify-center">
                                 <ArrowUpRight color="green" />
                             </div>
                         </div>
@@ -93,17 +99,20 @@ const cards = () => {
 
             <div className="flex flex-col items-start gap-2 w-1/6">
                 <div
-                    className="w-full rounded-[32px] h-96 relative bg-[#033f2d]">
+                    className="w-full rounded-[32px] h-96 relative">
 
-                    <HandCoins size={'100px'} color="white" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                    <img
+                        className="h-full w-full object-cover rounded-[32px] scale-x-[-1] brightness-[65%]"
+                        src="https://t3.ftcdn.net/jpg/03/80/27/88/360_F_380278806_hU362lmcYRqkb8reIageNj4Qh7ID9mIg.jpg"
+                    />
 
                     <div className="flex items-center justify-center">
                         <div
                             style={{ padding: "7px 7px 7px 15px" }}
-                            className="w-[95%] bg-[#1c5141] text-white rounded-full flex items-center text-base justify-between absolute bottom-2"
+                            className="w-[95%] bg-neutral-500 text-white rounded-full flex items-center text-base justify-between absolute bottom-2"
                         >
                             Explore More
-                            <div className="bg-[#caf66e] rounded-full w-12 h-12 flex items-center justify-center">
+                            <div className="bg-white rounded-full w-12 h-12 flex items-center justify-center">
                                 <ArrowUpRight color="green" />
                             </div>
                         </div>

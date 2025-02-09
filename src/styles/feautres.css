@@ -1,0 +1,74 @@
+.Features>div {
+    margin: 30px;
+}
+
+.featureTitle {
+    display: grid;
+    place-items: center;
+}
+
+.featureTitleBtn {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    gap: 20px;
+    margin: 20px 0px;
+}
+
+.featureTitle>p {
+    font-size: 27px;
+}
+
+.featureTitleBtn>button {
+    display: flex;
+    cursor: pointer;
+    background-color: white;
+    padding: 12px 17px;
+    border-radius: 30px;
+    border: 2px solid #D6E5BE;
+}
+
+.grnBtn {
+    background-color: #D6E5BE !important;
+}
+
+.Features>button:hover {
+    border: 1px solid black;
+    background-color: white;
+    cursor: pointer;
+    transition: 0.4s all ease-in-out;
+}
+
+.featuresContent>p {
+    font-size: 23px;
+    width: 70vw;
+}
+
+.Features>span {
+    background-color: #D6E5BE;
+    padding: 5px;
+}
+
+.contentConts {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.featuresFooter {
+    display: flex;
+    margin: 300px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.featuresFooter>h1 {
+    font-size: 80px;
+    color: rgba(0, 0, 0, 0.637);
+}
+
+.featuresFooter>img {
+    height: 400px;
+    width: 400px;
+    border-radius: 50%;
+}
