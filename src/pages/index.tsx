@@ -1,10 +1,10 @@
-import Hello from "../components/index/hello"
+import Navbar from "../components/navbar"
 
 const index = () => {
     return (
-        <div className="flex items-center justify-center h-screen">
-            <Hello />
-        </div>
+        <div className="bg-zinc-100">
+            <Navbar />
+        </div >
     )
 }
 
