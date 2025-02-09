@@ -1,9 +1,9 @@
-import { Button } from "../components/ui/button"
+import Hello from "../components/index/hello"
 
 const index = () => {
     return (
         <div className="flex items-center justify-center h-screen">
-            <Button variant={"secondary"}>Hello</Button>
+            <Hello />
         </div>
     )
 }
