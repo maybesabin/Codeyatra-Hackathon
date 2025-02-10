@@ -1,6 +1,6 @@
 'use strict'
 
-import Navbar from "./components/Navbar"
+import Navbar from "./components/navbar"
 import Board from "./components/Board"
 import { useTaskContext } from "./contexts/taskContext"
 import { useEffect } from "react"
