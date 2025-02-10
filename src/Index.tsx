@@ -5,6 +5,8 @@ import Features from "./Feautres"
 import { Link } from "react-router-dom"
 import Contact from "../src/contact"
 import Accordion from "../src/accordion"
+import About from "../src/About"
+
 const index = () => {
     return (
         <>
@@ -50,8 +52,8 @@ const index = () => {
                 {/* Cards Section */}
                 <Cards />
             </div >
-
             <Features />
+            <About />
             <Accordion />
             <Contact />
         </>

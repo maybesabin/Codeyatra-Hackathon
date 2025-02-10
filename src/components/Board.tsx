@@ -1,5 +1,5 @@
 import { useTaskContext } from "@/contexts/taskContext";
-import { Trash } from "lucide-react";
+import { Circle, Trash } from "lucide-react";
 import Form from "./Form";
 import { useState } from "react";
 
@@ -9,6 +9,7 @@ const Board = () => {
         price: number;
         taskType: string;
         category: string;
+        incomeOrExpense: string;
     }
 
     const { filteredTasks, icons, deleteTask, setTasks, toggleLayout } = useTaskContext();
@@ -65,9 +66,12 @@ const Board = () => {
                 key={idx}
                 className={`flex flex-col items-start gap-4 p-4 border rounded-lg ${toggleLayout === "grid" ? "hover:scale-105" : "hover:scale-100"} active:scale-100 cursor-pointer transition-all bg-white`}
             >
-                <div className="flex items-center gap-2">
-                    {taskIcon?.icon}
-                    <h1 className="text-sm font-semibold capitalize">{task.title}</h1>
+                <div className="w-full flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        {taskIcon?.icon}
+                        <h1 className="text-sm font-semibold capitalize">{task.title}</h1>
+                    </div>
+                    <Circle size={'10px'} className={`${task.incomeOrExpense == "Income" ? "fill-green-600" : "fill-red-600"} animate-pulse`} />
                 </div>
                 <p className="text-xs text-gray-500 first-letter:capitalize">Rs. {task.price}</p>
                 <div className="flex items-center gap-4">
@@ -80,7 +84,7 @@ const Board = () => {
         );
     };
 
-    const TaskColumn = ({ title, tasks, taskType }: { title: string; tasks: Task[]; taskType: string }) => (
+    const TaskColumn = ({ title, tasks, taskType }: { title: string; tasks: Task[]; taskType: string, }) => (
         <div
             className={`${toggleLayout === "list" ? "w-full" : "lg:w-1/4 w-full"} flex flex-col gap-6`}
         >

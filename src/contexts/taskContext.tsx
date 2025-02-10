@@ -7,6 +7,7 @@ interface Task {
     price: number;
     taskType: string;
     category: string;
+    incomeOrExpense: string;
 }
 
 interface Icon {
@@ -36,6 +37,8 @@ interface TaskContextType {
     fetchWeather: () => Promise<void>;
     city: string;
     setCity: React.Dispatch<SetStateAction<string>>;
+    profit: number;
+    loss: number
 }
 
 
@@ -124,6 +127,7 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     //calculating data
     const [total, setTotal] = useState(0);
     const [profit, setProfit] = useState(0);
+    const [loss, setLoss] = useState(0);
     const [sales, setSales] = useState(0);
 
     useEffect(() => {
@@ -137,6 +141,22 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
             return acc;
         }, 0);
         setSales(totalSales);
+
+        const totalProfit = tasks.reduce((acc: any, item: any) => {
+            if (item.incomeOrExpense == "Income") {
+                return acc + parseInt(item.price, 10);
+            }
+            return acc;
+        }, 0)
+        setProfit(totalProfit)
+
+        const totalLoss = tasks.reduce((acc: any, item: any) => {
+            if (item.incomeOrExpense == "Expense") {
+                return acc + parseInt(item.price, 10);
+            }
+            return acc;
+        }, 0)
+        setLoss(totalLoss)
     }, [tasks]);
 
 
@@ -184,7 +204,8 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
                 fetchWeather,
                 setCity,
                 city,
-
+                profit,
+                loss
             }}
         >
             {children}

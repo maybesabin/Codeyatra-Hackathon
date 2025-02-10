@@ -3,7 +3,7 @@ import Card from "./card"
 
 const cards = () => {
 
-    const { total, sales } = useTaskContext()
+    const { total, sales, profit, loss } = useTaskContext()
 
     return (
         <div className="w-full mt-4 flex items-start justify-between gap-4">
@@ -13,11 +13,11 @@ const cards = () => {
             />
             <Card
                 title="Loss"
-                value={3000}
+                value={loss}
             />
             <Card
                 title="Profit"
-                value={3000}
+                value={profit}
             />
             <Card
                 title="Sales"

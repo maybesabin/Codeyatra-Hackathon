@@ -35,20 +35,24 @@ const Navbar = () => {
         price: number;
         taskType: string;
         category: string;
+        incomeOrExpense: string;
     }
     const { toast } = useToast()
-    const { addTask } = useTaskContext();
+    const { addTask, } = useTaskContext();
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState(0);
     const [taskType, setTaskType] = useState('');
     const [category, setCategory] = useState('');
+    const [incomeOrExpense, setIncomeOrExpense] = useState("")
 
     const handleSubmit = () => {
+
         const newTask: Task = {
             title,
             price,
             taskType,
-            category
+            category,
+            incomeOrExpense
         };
         if (!title) {
             toast({
@@ -68,6 +72,13 @@ const Navbar = () => {
             toast({
                 title: "Error",
                 description: "Category is required",
+            });
+            return;
+        }
+        if (!incomeOrExpense) {
+            toast({
+                title: "Error",
+                description: "Specify whether income or expense",
             });
             return;
         }
@@ -117,7 +128,7 @@ const Navbar = () => {
                             </div>
                             <div className="grid grid-cols-4 items-center gap-12">
                                 <Label htmlFor="price" className='text-sm'>
-                                    Price*
+                                    Price
                                 </Label>
                                 <Input
                                     id="name"
@@ -125,6 +136,39 @@ const Navbar = () => {
                                     value={price}
                                     onChange={(e: any) => setPrice(e.target.value)}
                                 />
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-12">
+                                <Label className="text-sm">Source*</Label>
+                                <div className="flex gap-4 col-span-3">
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="incomeOrExpense"
+                                            value="Income"
+                                            checked={incomeOrExpense === "Income"}
+                                            onChange={(e) => setIncomeOrExpense(e.target.value)}
+                                            className="hidden"
+                                        />
+                                        <div className={`w-4 h-4 border-2 rounded-full flex items-center justify-center ${incomeOrExpense === "Income" ? "border-blue-500" : "border-gray-400"}`}>
+                                            {incomeOrExpense === "Income" && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
+                                        </div>
+                                        <span>Income</span>
+                                    </label>
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="incomeOrExpense"
+                                            value="Expense"
+                                            checked={incomeOrExpense === "Expense"}
+                                            onChange={(e) => setIncomeOrExpense(e.target.value)}
+                                            className="hidden"
+                                        />
+                                        <div className={`w-4 h-4 border-2 rounded-full flex items-center justify-center ${incomeOrExpense === "Expense" ? "border-red-500" : "border-gray-400"}`}>
+                                            {incomeOrExpense === "Expense" && <div className="w-2 h-2 bg-red-500 rounded-full"></div>}
+                                        </div>
+                                        <span>Expense</span>
+                                    </label>
+                                </div>
                             </div>
                             <div className="grid grid-cols-4 items-center gap-12">
                                 <Label htmlFor="taskType" className='text-sm'>
