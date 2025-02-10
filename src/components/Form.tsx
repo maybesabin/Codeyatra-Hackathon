@@ -60,13 +60,6 @@ const Form = ({ taskType }: { taskType: string }) => {
             });
             return;
         }
-        if (!price) {
-            toast({
-                title: "Error",
-                description: "Price is required",
-            });
-            return;
-        }
 
         if (!category) {
             toast({
@@ -114,7 +107,7 @@ const Form = ({ taskType }: { taskType: string }) => {
                             <Input
                                 id="price"
                                 className="col-span-3"
-                                value={title}
+                                value={price}
                                 onChange={(e: any) => setPrice(e.target.value)}
                             />
                         </div>

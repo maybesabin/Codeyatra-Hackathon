@@ -1,7 +1,6 @@
-'use strict'
-
 import { createContext, SetStateAction, useContext, useEffect, useState } from "react";
 import { Cherry, Dumbbell, Egg, Grid2X2, LeafyGreen, Milk, Wheat } from "lucide-react";
+import axios from "axios"
 
 interface Task {
     title: string;
@@ -33,7 +32,12 @@ interface TaskContextType {
     filteredTasks: Task[];
     total: number,
     setTotal: React.Dispatch<SetStateAction<number>>;
+    sales: number;
+    fetchWeather: () => Promise<void>;
+    city: string;
+    setCity: React.Dispatch<SetStateAction<string>>;
 }
+
 
 const taskContext = createContext<TaskContextType | undefined>(undefined);
 
@@ -119,10 +123,43 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
 
     //calculating data
     const [total, setTotal] = useState(0);
+    const [profit, setProfit] = useState(0);
+    const [sales, setSales] = useState(0);
+
     useEffect(() => {
-        tasks.map((item) => setTotal(item.price))
-    }, [tasks])
-    console.log(total)
+        const totalCost = tasks.reduce((acc: any, item: any) => parseInt(acc) + parseInt(item.price), 0);
+        setTotal(totalCost);
+
+        const totalSales = tasks.reduce((acc: any, item: any) => {
+            if (item.taskType == "Done") {
+                return acc + parseInt(item.price, 10);
+            }
+            return acc;
+        }, 0);
+        setSales(totalSales);
+    }, [tasks]);
+
+
+    //weather api
+    const API_KEY = import.meta.env.VITE_WEATHER_API_KEY
+    const [weatherData, setWeatherData] = useState([])
+    const [city, setCity] = useState("")
+
+    localStorage.setItem("weatherData", JSON.stringify(weatherData));
+
+    const fetchWeather = async () => {
+        try {
+            const userData = localStorage.getItem("user");
+            if (!userData) return;
+            const { location } = JSON.parse(userData);
+            const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&units=metric`);
+            setWeatherData(response.data);
+            console.log(response.data);
+        } catch (error: any) {
+            console.log(`Error: ${error.message}`);
+        }
+    }
+
 
     return (
         <taskContext.Provider
@@ -142,7 +179,12 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
                 setTaskFilter,
                 filteredTasks,
                 total,
-                setTotal
+                setTotal,
+                sales,
+                fetchWeather,
+                setCity,
+                city,
+
             }}
         >
             {children}

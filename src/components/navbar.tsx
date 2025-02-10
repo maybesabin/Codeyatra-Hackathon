@@ -64,13 +64,6 @@ const Navbar = () => {
             });
             return;
         }
-        if (!price) {
-            toast({
-                title: "Error",
-                description: "Price is required",
-            });
-            return;
-        }
         if (!category) {
             toast({
                 title: "Error",

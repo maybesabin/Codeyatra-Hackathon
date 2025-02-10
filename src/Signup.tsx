@@ -1,131 +1,134 @@
-"use client"
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { useLoginContext } from "../src/contexts/loginContext";
+import { Eye, EyeOff, Lock, Mail, MapPin, User } from "lucide-react";
 
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { useToast } from "../src/hooks/use-toast"
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>((props, ref) => (
+    <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+));
 
-export default function SignUp() {
-    const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const { toast } = useToast()
-    const navigate = useNavigate()
+const Signup = () => {
+    const navigate = useNavigate();
+    const { setIsLoggedIn } = useLoginContext();
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
+    const [formData, setFormData] = useState({ username: "", email: "", password: "", location: "" });
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
+    const [showPassword, setShowPassword] = useState(false);
 
-        // Check if any field is empty
-        if (!username || !email || !password) {
-            toast({
-                title: "Sign Up Failed",
-                description: "All fields are required.",
-                variant: "destructive",
-                duration: 3000,
-            })
-            return
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleCloseSnackbar = () => setOpenSnackbar(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const existingUser = localStorage.getItem("user");
+
+        if (existingUser) {
+            setSnackbarMessage("A user account already exists!");
+            setSnackbarSeverity("error");
+            setOpenSnackbar(true);
+            return;
         }
 
-        const userData = { username, email, password }
-
-        try {
-            // Get existing users from localStorage
-            const storedUsers = JSON.parse(localStorage.getItem("users") || "[]")
-
-            // Check if username or email already exists
-            const userExists = storedUsers.some(
-                (user: any) => user.username === username || user.email === email
-            )
-
-            if (userExists) {
-                toast({
-                    title: "Sign Up Failed",
-                    description: "Username or email already exists. Please try another one.",
-                    variant: "destructive",
-                    duration: 3000,
-                })
-                return
-            }
-
-            // Save new user
-            storedUsers.push(userData)
-            localStorage.setItem("users", JSON.stringify(storedUsers))
-
-            // Also store the logged-in user
-            localStorage.setItem("loggedInUser", JSON.stringify(userData))
-
-            toast({
-                title: "Sign Up Successful",
-                description: "Your account has been created successfully.",
-                duration: 3000,
-            })
-
-            setTimeout(() => {
-                navigate("/")
-            }, 1000)
-        } catch (error) {
-            toast({
-                title: "Sign Up Failed",
-                description: "There was an error creating your account. Please try again.",
-                variant: "destructive",
-                duration: 3000,
-            })
-        }
-    }
+        localStorage.setItem("user", JSON.stringify(formData));
+        setSnackbarMessage("Account created successfully!");
+        setSnackbarSeverity("success");
+        setOpenSnackbar(true);
+        setIsLoggedIn(true);
+        setTimeout(() => navigate("/"), 500);
+    };
 
     return (
-        <div className="w-full mt-48 flex items-center justify-center">
-            <Card className="w-full max-w-md mx-auto">
-                <CardHeader>
-                    <CardTitle>Sign Up</CardTitle>
-                    <CardDescription>Create your account to get started.</CardDescription>
-                </CardHeader>
-                <form onSubmit={handleSubmit}>
-                    <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="username">Username</Label>
-                            <Input
-                                id="username"
-                                type="text"
-                                placeholder="johndoe"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="john@example.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="text-sm">Already have an account ? <Link to={'/'} className="underline">Login here</Link></div>
-                    </CardContent>
-                    <CardFooter>
-                        <Button type="submit" className="w-full">
-                            Sign Up
-                        </Button>
-                    </CardFooter>
-                </form>
-            </Card>
+        <div className="h-screen w-full flex items-center justify-center bg-[url('../src/assets/signupoverlay.png')] bg-cover bg-center bg-no-repeat">
+            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: "100%" }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+
+            <form
+                onSubmit={handleSubmit}
+                className="absolute top-56 right-40 flex flex-col items-center gap-6 text-white bg-opacity-90 p-6 rounded-lg"
+            >
+                <h1 className="text-5xl font-bold tracking-tighter">Create an account</h1>
+                <p className="text-neutral-100 w-full text-left -mt-4">Join us today!</p>
+
+                <div className="mt-4 w-full border border-white bg-white p-4 flex items-center gap-4 rounded-lg">
+                    <User color="gray" />
+                    <input
+                        value={formData.username}
+                        onChange={handleChange}
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        className="outline-none border-none text-black w-full"
+                        required
+                    />
+                </div>
+
+                <div className="w-full border border-white bg-white p-4 flex items-center gap-4 rounded-lg">
+                    <Mail color="gray" />
+                    <input
+                        value={formData.email}
+                        onChange={handleChange}
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        className="outline-none border-none text-black w-full"
+                        required
+                    />
+                </div>
+
+                <div className="w-full border border-white bg-white p-4 flex items-center gap-4 rounded-lg">
+                    <Lock color="gray" />
+                    <input
+                        value={formData.password}
+                        onChange={handleChange}
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="Password"
+                        className="outline-none border-none text-black w-full"
+                        required
+                    />
+                    {showPassword ? (
+                        <Eye onClick={() => setShowPassword(false)} className="cursor-pointer text-gray-500 hover:text-black" />
+                    ) : (
+                        <EyeOff onClick={() => setShowPassword(true)} className="cursor-pointer text-gray-500 hover:text-black" />
+                    )}
+                </div>
+
+                <div className="w-full border border-white bg-white p-4 flex items-center gap-4 rounded-lg">
+                    <MapPin color="gray" />
+                    <input
+                        value={formData.location}
+                        onChange={handleChange}
+                        type="text"
+                        name="location"
+                        placeholder="Enter location"
+                        className="outline-none border-none text-black w-full"
+                        required
+                    />
+                </div>
+
+                <button type="submit" className="w-full font-medium bg-gradient-to-bl from-green-700 to-green-500 text-white p-4 rounded-lg">
+                    Sign Up
+                </button>
+
+                <h3 className="text-center">
+                    Already have an account?{" "}
+                    <Link to={"/login"} className="font-semibold">
+                        Log in
+                    </Link>
+                </h3>
+            </form>
         </div>
-    )
-}
+    );
+};
+
+export default Signup;

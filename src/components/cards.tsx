@@ -1,27 +1,27 @@
+import { useTaskContext } from "@/contexts/taskContext"
 import Card from "./card"
 
 const cards = () => {
+
+    const { total, sales } = useTaskContext()
+
     return (
         <div className="w-full mt-4 flex items-start justify-between gap-4">
             <Card
                 title="Total"
-                currency={true}
-                value={3000}
+                value={total}
             />
             <Card
                 title="Loss"
-                currency={true}
                 value={3000}
             />
             <Card
                 title="Profit"
-                currency={true}
                 value={3000}
             />
             <Card
                 title="Sales"
-                currency={false}
-                value={3000}
+                value={sales}
             />
         </div>
     )
